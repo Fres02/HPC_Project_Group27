@@ -3,19 +3,23 @@ CFLAGS   = -O2 -Wall -Wextra -std=c11
 LDFLAGS  = -lm
 
 CORE_DIR = ../core
-SRCS     = $(CORE_DIR)/grid.c
-TEST_SRC = test_grid.c
-TEST_BIN = test_grid
+CORE_SRCS = $(CORE_DIR)/grid.c $(CORE_DIR)/jacobi_serial.c
+
+TEST_BINS = test_grid test_jacobi_serial
 
 .PHONY: all test clean
 
-all: $(TEST_BIN)
+all: $(TEST_BINS)
 
-$(TEST_BIN): $(TEST_SRC) $(SRCS)
+test_grid: test_grid.c $(CORE_DIR)/grid.c
 	$(CC) $(CFLAGS) -I$(CORE_DIR) -o $@ $^ $(LDFLAGS)
 
-test: $(TEST_BIN)
-	./$(TEST_BIN)
+test_jacobi_serial: test_jacobi_serial.c $(CORE_SRCS)
+	$(CC) $(CFLAGS) -I$(CORE_DIR) -o $@ $^ $(LDFLAGS)
+
+test: $(TEST_BINS)
+	./test_grid
+	./test_jacobi_serial
 
 clean:
-	rm -f $(TEST_BIN) *.o
+	rm -f $(TEST_BINS) *.o

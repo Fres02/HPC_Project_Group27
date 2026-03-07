@@ -11,7 +11,7 @@
  *   ./test_jacobi_serial
  */
 
-#include "jacobi_serial.h"
+#include "../core/jacobi_serial.h"
 
 #include <math.h>
 #include <stdio.h>
