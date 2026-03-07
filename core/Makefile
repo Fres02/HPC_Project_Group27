@@ -2,7 +2,7 @@ CC      = gcc
 CFLAGS  = -O2 -Wall -Wextra -std=c11
 LDFLAGS = -lm
 
-SRCS    = jacobi_serial.c
+SRCS    = grid.c jacobi_serial.c
 OBJS    = $(SRCS:.c=.o)
 
 TEST_SRC = test_jacobi_serial.c
