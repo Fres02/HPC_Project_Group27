@@ -1,0 +1,568 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>HPC Jacobi Solver - Project Dashboard</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            padding: 20px;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        header {
+            background: white;
+            padding: 40px;
+            border-radius: 8px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            margin-bottom: 30px;
+            text-align: center;
+        }
+
+        h1 {
+            color: #333;
+            margin-bottom: 10px;
+            font-size: 2.5em;
+        }
+
+        .subtitle {
+            color: #666;
+            font-size: 1.1em;
+            margin-bottom: 20px;
+        }
+
+        .status-badge {
+            display: inline-block;
+            background: #10b981;
+            color: white;
+            padding: 8px 16px;
+            border-radius: 20px;
+            font-size: 0.9em;
+            font-weight: 600;
+        }
+
+        .grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+            gap: 25px;
+            margin-bottom: 30px;
+        }
+
+        .card {
+            background: white;
+            border-radius: 8px;
+            padding: 25px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+
+        .card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 15px rgba(0, 0, 0, 0.15);
+        }
+
+        .card h2 {
+            color: #667eea;
+            margin-bottom: 15px;
+            font-size: 1.5em;
+            border-bottom: 2px solid #667eea;
+            padding-bottom: 10px;
+        }
+
+        .card p {
+            color: #555;
+            line-height: 1.6;
+            margin-bottom: 15px;
+        }
+
+        .feature-list {
+            list-style: none;
+        }
+
+        .feature-list li {
+            padding: 10px 0;
+            color: #555;
+            border-bottom: 1px solid #eee;
+            display: flex;
+            align-items: center;
+        }
+
+        .feature-list li:last-child {
+            border-bottom: none;
+        }
+
+        .status-icon {
+            display: inline-block;
+            width: 20px;
+            height: 20px;
+            border-radius: 50%;
+            margin-right: 12px;
+            font-weight: bold;
+            color: white;
+            text-align: center;
+            line-height: 20px;
+            font-size: 0.8em;
+        }
+
+        .status-icon.done {
+            background: #10b981;
+        }
+
+        .status-icon.pending {
+            background: #f97316;
+        }
+
+        .stats {
+            display: flex;
+            justify-content: space-around;
+            gap: 15px;
+            margin-top: 15px;
+        }
+
+        .stat-box {
+            text-align: center;
+            flex: 1;
+        }
+
+        .stat-number {
+            font-size: 2em;
+            font-weight: bold;
+            color: #667eea;
+        }
+
+        .stat-label {
+            color: #999;
+            font-size: 0.9em;
+            margin-top: 5px;
+        }
+
+        .code-block {
+            background: #f5f5f5;
+            border-left: 4px solid #667eea;
+            padding: 15px;
+            margin: 15px 0;
+            border-radius: 4px;
+            font-family: 'Courier New', monospace;
+            overflow-x: auto;
+            font-size: 0.9em;
+        }
+
+        .button {
+            display: inline-block;
+            background: #667eea;
+            color: white;
+            padding: 12px 24px;
+            border-radius: 4px;
+            text-decoration: none;
+            font-weight: 600;
+            transition: background 0.3s ease;
+            border: none;
+            cursor: pointer;
+            font-size: 0.95em;
+        }
+
+        .button:hover {
+            background: #764ba2;
+        }
+
+        .button.secondary {
+            background: #6b7280;
+        }
+
+        .button.secondary:hover {
+            background: #4b5563;
+        }
+
+        .file-tree {
+            background: #f5f5f5;
+            border-left: 4px solid #667eea;
+            padding: 15px;
+            margin: 15px 0;
+            border-radius: 4px;
+            font-family: 'Courier New', monospace;
+            font-size: 0.9em;
+            overflow-x: auto;
+        }
+
+        .file-tree pre {
+            margin: 0;
+            white-space: pre-wrap;
+        }
+
+        .progress-bar {
+            width: 100%;
+            height: 8px;
+            background: #e5e7eb;
+            border-radius: 4px;
+            overflow: hidden;
+            margin: 15px 0;
+        }
+
+        .progress-fill {
+            height: 100%;
+            background: linear-gradient(90deg, #667eea 0%, #764ba2 100%);
+            animation: progress 1s ease-in-out;
+        }
+
+        @keyframes progress {
+            0% { width: 0; }
+            100% { width: 50%; }
+        }
+
+        .test-result {
+            background: #f0fdf4;
+            border-left: 4px solid #10b981;
+            padding: 15px;
+            margin: 15px 0;
+            border-radius: 4px;
+        }
+
+        .test-result.warning {
+            background: #fffbeb;
+            border-left-color: #f97316;
+        }
+
+        .test-count {
+            font-weight: bold;
+            color: #10b981;
+        }
+
+        footer {
+            background: white;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            text-align: center;
+            color: #666;
+            margin-top: 30px;
+        }
+
+        .section-divider {
+            height: 2px;
+            background: linear-gradient(90deg, transparent, #667eea, transparent);
+            margin: 30px 0;
+        }
+
+        .timeline {
+            position: relative;
+            padding: 20px 0;
+        }
+
+        .timeline-item {
+            padding-left: 30px;
+            margin-bottom: 20px;
+            border-left: 2px solid #e5e7eb;
+            padding-bottom: 20px;
+        }
+
+        .timeline-item.active {
+            border-left-color: #10b981;
+        }
+
+        .timeline-item.pending {
+            border-left-color: #f97316;
+        }
+
+        .timeline-marker {
+            position: absolute;
+            left: -9px;
+            width: 16px;
+            height: 16px;
+            background: white;
+            border: 2px solid #e5e7eb;
+            border-radius: 50%;
+            margin-top: 2px;
+        }
+
+        .timeline-item.active .timeline-marker {
+            background: #10b981;
+            border-color: #10b981;
+        }
+
+        .timeline-item.pending .timeline-marker {
+            background: #f97316;
+            border-color: #f97316;
+        }
+
+        .timeline-title {
+            font-weight: 600;
+            color: #333;
+            margin-bottom: 5px;
+        }
+
+        .timeline-description {
+            color: #666;
+            font-size: 0.9em;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>🚀 HPC Jacobi Solver</h1>
+            <p class="subtitle">High-Performance Computing Project - Parallel Implementations</p>
+            <span class="status-badge">✓ Foundation Complete</span>
+        </header>
+
+        <!-- Project Status -->
+        <div class="grid">
+            <div class="card">
+                <h2>📊 Project Status</h2>
+                <div class="stats">
+                    <div class="stat-box">
+                        <div class="stat-number">2</div>
+                        <div class="stat-label">Completed</div>
+                    </div>
+                    <div class="stat-box">
+                        <div class="stat-number">9</div>
+                        <div class="stat-label">Planned</div>
+                    </div>
+                    <div class="stat-box">
+                        <div class="stat-number">54</div>
+                        <div class="stat-label">Tests Pass</div>
+                    </div>
+                </div>
+                <div class="progress-bar">
+                    <div class="progress-fill" style="width: 18%;"></div>
+                </div>
+                <p style="font-size: 0.9em; color: #999; margin: 10px 0 0 0;">Foundation: 18% complete</p>
+            </div>
+
+            <div class="card">
+                <h2>✅ Completed Features</h2>
+                <ul class="feature-list">
+                    <li>
+                        <span class="status-icon done">✓</span>
+                        <strong>Feature 1:</strong> Serial Core Solver
+                    </li>
+                    <li>
+                        <span class="status-icon done">✓</span>
+                        <strong>Feature 2:</strong> Grid & Boundary Management
+                    </li>
+                </ul>
+                <p style="margin-top: 15px; font-size: 0.9em; color: #666;">
+                    Both modules fully tested and integrated. Ready for parallel implementations.
+                </p>
+            </div>
+
+            <div class="card">
+                <h2>📋 Next Steps</h2>
+                <ul class="feature-list">
+                    <li>
+                        <span class="status-icon pending">→</span>
+                        Feature 3: Convergence & Validation
+                    </li>
+                    <li>
+                        <span class="status-icon pending">→</span>
+                        Feature 4: OpenMP Parallel Version
+                    </li>
+                    <li>
+                        <span class="status-icon pending">→</span>
+                        Feature 5: POSIX Threads Version
+                    </li>
+                </ul>
+            </div>
+        </div>
+
+        <!-- Implementation Timeline -->
+        <div class="card">
+            <h2>📅 Implementation Roadmap</h2>
+            <div class="timeline">
+                <div class="timeline-item active">
+                    <div class="timeline-marker"></div>
+                    <div class="timeline-title">Feature 1: Serial Core Solver</div>
+                    <div class="timeline-description">Baseline Jacobi solver with double buffering and convergence checking.</div>
+                </div>
+                <div class="timeline-item active">
+                    <div class="timeline-marker"></div>
+                    <div class="timeline-title">Feature 2: Grid & Boundary Management</div>
+                    <div class="timeline-description">Reusable grid module with allocation, initialization, and buffer utilities.</div>
+                </div>
+                <div class="timeline-item pending">
+                    <div class="timeline-marker"></div>
+                    <div class="timeline-title">Feature 3: Convergence & Validation</div>
+                    <div class="timeline-description">Independent validation layer for correctness verification.</div>
+                </div>
+                <div class="timeline-item pending">
+                    <div class="timeline-marker"></div>
+                    <div class="timeline-title">Feature 4: OpenMP Parallel</div>
+                    <div class="timeline-description">Shared-memory parallelization using OpenMP directives.</div>
+                </div>
+                <div class="timeline-item pending">
+                    <div class="timeline-marker"></div>
+                    <div class="timeline-title">Feature 5-11: Remaining Implementations</div>
+                    <div class="timeline-description">Pthreads, MPI, CUDA, Hybrid, Benchmarking, and Reporting.</div>
+                </div>
+            </div>
+        </div>
+
+        <div class="section-divider"></div>
+
+        <div class="grid">
+            <!-- Test Results -->
+            <div class="card">
+                <h2>🧪 Test Results</h2>
+                <div class="test-result">
+                    <strong>Grid Module Tests:</strong><br>
+                    <span class="test-count">36 / 36 passed</span>
+                    <ul class="feature-list" style="margin-top: 10px;">
+                        <li>✓ Allocation & deallocation</li>
+                        <li>✓ Boundary conditions</li>
+                        <li>✓ Buffer swapping</li>
+                        <li>✓ Grid copying</li>
+                        <li>✓ Large grid handling (N=512)</li>
+                    </ul>
+                </div>
+                <div class="test-result">
+                    <strong>Serial Jacobi Tests:</strong><br>
+                    <span class="test-count">18 / 18 passed</span>
+                    <ul class="feature-list" style="margin-top: 10px;">
+                        <li>✓ Convergence validation</li>
+                        <li>✓ Boundary preservation</li>
+                        <li>✓ Laplace residual checks</li>
+                        <li>✓ Solution range tests</li>
+                    </ul>
+                </div>
+            </div>
+
+            <!-- Build Instructions -->
+            <div class="card">
+                <h2>🔨 Build & Test</h2>
+                <p>Run all tests from the project root:</p>
+                <div class="code-block">
+$ make test
+                </div>
+                <p>Build only:</p>
+                <div class="code-block">
+$ make
+                </div>
+                <p>Clean build artifacts:</p>
+                <div class="code-block">
+$ make clean
+                </div>
+                <p><strong>Requirements:</strong> GCC, Make, POSIX C library (libm)</p>
+            </div>
+
+            <!-- Project Structure -->
+            <div class="card">
+                <h2>📁 Project Structure</h2>
+                <div class="file-tree">
+<pre>HPC_Project_Group27/
+├── core/
+│   ├── grid.h          (Grid module header)
+│   ├── grid.c          (Grid implementation)
+│   ├── jacobi_serial.h (Solver header)
+│   └── jacobi_serial.c (Solver implementation)
+├── tests/
+│   ├── test_grid.c     (36 tests)
+│   └── test_jacobi_serial.c (18 tests)
+├── Makefile            (Combined build rules)
+├── features.md         (Project roadmap)
+└── index.html          (This dashboard)</pre>
+                </div>
+            </div>
+        </div>
+
+        <div class="section-divider"></div>
+
+        <!-- API Reference -->
+        <div class="card">
+            <h2>🔌 Core API Reference</h2>
+            
+            <div style="margin: 20px 0;">
+                <h3 style="color: #667eea; margin-bottom: 10px;">Grid Module (core/grid.h)</h3>
+                <div class="code-block">
+double **alloc_grid(int N)          // Allocate N×N grid
+void free_grid(double **grid, int N) // Free grid
+
+void init_grid(double **grid, int N) // Initialize with default BCs
+void init_grid_custom(...)           // Custom BCs & interior fill
+void fill_interior(...)              // Set interior without touching boundary
+
+void swap_buffers(double ***a, double ***b) // O(1) pointer swap
+void copy_grid(...)                  // Full N×N memcpy
+                </div>
+            </div>
+
+            <div style="margin: 20px 0;">
+                <h3 style="color: #667eea; margin-bottom: 10px;">Jacobi Solver (core/jacobi_serial.h)</h3>
+                <div class="code-block">
+typedef struct {
+    int iterations;    // Iterations performed
+    double final_error; // Converged residual
+    int converged;     // 1 if tolerance met, 0 if max_iter hit
+} JacobiResult;
+
+JacobiResult jacobi_solve(
+    double **grid, int N,
+    int max_iter, double tol
+);
+                </div>
+            </div>
+        </div>
+
+        <!-- Quick Links -->
+        <div class="card">
+            <h2>🔗 Quick Links & Resources</h2>
+            <p>
+                <button class="button" onclick="navigateToFile('features.md')">📄 Project Features</button>
+                <button class="button secondary" onclick="downloadSource()">📥 Download Source</button>
+            </p>
+            <p style="margin-top: 20px; color: #666; font-size: 0.9em;">
+                <strong>Git Repository:</strong> Fres02/HPC_Project_Group27 (branch: fres)<br>
+                <strong>Implementation Language:</strong> C (C11 standard)<br>
+                <strong>Test Framework:</strong> Custom lightweight harness (no external dependencies)
+            </p>
+        </div>
+
+        <footer>
+            <p>HPC Jacobi Solver Project Dashboard</p>
+            <p style="font-size: 0.9em; margin-top: 10px;">Last updated: 2026-03-07 | Status: Active Development</p>
+        </footer>
+    </div>
+
+    <script>
+        function navigateToFile(filename) {
+            alert(`View ${filename} for detailed project information.`);
+        }
+
+        function downloadSource() {
+            alert('Clone the repository: git clone https://github.com/Fres02/HPC_Project_Group27.git');
+        }
+
+        // Add click feedback
+        document.querySelectorAll('.button').forEach(btn => {
+            btn.addEventListener('click', function(e) {
+                this.style.transform = 'scale(0.95)';
+                setTimeout(() => {
+                    this.style.transform = 'scale(1)';
+                }, 100);
+            });
+        });
+
+        // Smooth scroll for navigation
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function (e) {
+                e.preventDefault();
+                const target = document.querySelector(this.getAttribute('href'));
+                if (target) {
+                    target.scrollIntoView({ behavior: 'smooth' });
+                }
+            });
+        });
+    </script>
+</body>
+</html>
