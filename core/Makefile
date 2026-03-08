@@ -2,7 +2,7 @@ CC      = gcc
 CFLAGS  = -O2 -Wall -Wextra -std=c11
 LDFLAGS = -lm
 
-SRCS = grid.c jacobi_serial.c
+SRCS = grid.c jacobi_serial.c convergence.c
 OBJS = $(SRCS:.c=.o)
 
 .PHONY: all clean
