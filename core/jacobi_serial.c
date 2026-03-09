@@ -61,5 +61,9 @@ JacobiResult jacobi_solve(double **grid, int N, int max_iter, double tol)
         copy_grid(grid, curr, N);
 
     free_grid(buf_b, N);
+    fprintf(stderr, result.converged
+            ? "jacobi_solve: converged in %d iterations (final error = %g)\n"
+            : "jacobi_solve: reached max_iter=%d without convergence (final error = %g)\n",
+            result.iterations, result.final_error);
     return result;
 }

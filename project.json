@@ -1,0 +1,124 @@
+{
+  "projectName": "HPC Jacobi Solver",
+  "description": "High-Performance Computing Project - Parallel Implementations",
+  "status": "Active Development",
+  "lastUpdated": "2026-03-07",
+  "completedFeatures": 2,
+  "totalFeatures": 11,
+  "progressPercent": 18,
+  "totalTestsPassed": 54,
+  "totalTestsPlanned": 54,
+  "features": [
+    {
+      "id": 1,
+      "name": "Serial Core Solver",
+      "status": "completed",
+      "description": "Baseline Jacobi solver with double buffering and convergence checking"
+    },
+    {
+      "id": 2,
+      "name": "Grid & Boundary Management",
+      "status": "completed",
+      "description": "Reusable grid module with allocation, initialization, and buffer utilities"
+    },
+    {
+      "id": 3,
+      "name": "Convergence & Validation",
+      "status": "pending",
+      "description": "Independent validation layer for correctness verification"
+    },
+    {
+      "id": 4,
+      "name": "OpenMP Parallel",
+      "status": "pending",
+      "description": "Shared-memory parallelization using OpenMP directives"
+    },
+    {
+      "id": 5,
+      "name": "POSIX Threads Version",
+      "status": "pending",
+      "description": "Low-level threading with barrier synchronization"
+    },
+    {
+      "id": 6,
+      "name": "MPI Distributed Version",
+      "status": "pending",
+      "description": "Domain decomposition and halo exchange"
+    },
+    {
+      "id": 7,
+      "name": "CUDA GPU Version",
+      "status": "pending",
+      "description": "GPU-accelerated implementation with kernel optimization"
+    },
+    {
+      "id": 8,
+      "name": "Hybrid Parallel Version",
+      "status": "pending",
+      "description": "Combination of MPI and OpenMP/CUDA"
+    },
+    {
+      "id": 9,
+      "name": "Performance Benchmarking",
+      "status": "pending",
+      "description": "Scaling tests and performance analysis"
+    },
+    {
+      "id": 10,
+      "name": "Experiment Configuration",
+      "status": "pending",
+      "description": "Command-line and configuration file setup"
+    },
+    {
+      "id": 11,
+      "name": "Reporting & Comparison",
+      "status": "pending",
+      "description": "Final documentation and presentation"
+    }
+  ],
+  "testResults": [
+    {
+      "module": "Grid Module Tests",
+      "passed": 36,
+      "total": 36,
+      "tests": [
+        "Allocation & deallocation",
+        "Boundary conditions",
+        "Buffer swapping",
+        "Grid copying",
+        "Large grid handling (N=512)"
+      ]
+    },
+    {
+      "module": "Serial Jacobi Tests",
+      "passed": 18,
+      "total": 18,
+      "tests": [
+        "Convergence validation",
+        "Boundary preservation",
+        "Laplace residual checks",
+        "Solution range tests"
+      ]
+    }
+  ],
+  "buildCommands": [
+    {
+      "command": "make test",
+      "description": "Build and run all tests"
+    },
+    {
+      "command": "make",
+      "description": "Build all binaries"
+    },
+    {
+      "command": "make clean",
+      "description": "Clean build artifacts"
+    }
+  ],
+  "repository": {
+    "owner": "Fres02",
+    "name": "HPC_Project_Group27",
+    "branch": "fres",
+    "defaultBranch": "main"
+  }
+}

@@ -307,14 +307,28 @@
             color: #666;
             font-size: 0.9em;
         }
+
+        .loading {
+            text-align: center;
+            padding: 20px;
+            color: #666;
+        }
+
+        .last-update {
+            font-size: 0.85em;
+            color: #999;
+            text-align: center;
+            margin-top: 10px;
+        }
     </style>
 </head>
 <body>
     <div class="container">
         <header>
-            <h1>🚀 HPC Jacobi Solver</h1>
-            <p class="subtitle">High-Performance Computing Project - Parallel Implementations</p>
-            <span class="status-badge">✓ Foundation Complete</span>
+            <h1 id="projectTitle">🚀 HPC Jacobi Solver</h1>
+            <p class="subtitle" id="projectDescription">High-Performance Computing Project - Parallel Implementations</p>
+            <span class="status-badge" id="statusBadge">✓ Foundation Complete</span>
+            <div class="last-update" id="lastUpdate"></div>
         </header>
 
         <!-- Project Status -->
@@ -323,56 +337,35 @@
                 <h2>📊 Project Status</h2>
                 <div class="stats">
                     <div class="stat-box">
-                        <div class="stat-number">2</div>
+                        <div class="stat-number" id="completedCount">0</div>
                         <div class="stat-label">Completed</div>
                     </div>
                     <div class="stat-box">
-                        <div class="stat-number">9</div>
+                        <div class="stat-number" id="planningCount">0</div>
                         <div class="stat-label">Planned</div>
                     </div>
                     <div class="stat-box">
-                        <div class="stat-number">54</div>
+                        <div class="stat-number" id="testCount">0</div>
                         <div class="stat-label">Tests Pass</div>
                     </div>
                 </div>
                 <div class="progress-bar">
-                    <div class="progress-fill" style="width: 18%;"></div>
+                    <div class="progress-fill" id="progressFill" style="width: 0%;"></div>
                 </div>
-                <p style="font-size: 0.9em; color: #999; margin: 10px 0 0 0;">Foundation: 18% complete</p>
+                <p style="font-size: 0.9em; color: #999; margin: 10px 0 0 0;">Foundation: <span id="progressText">0</span>% complete</p>
             </div>
 
             <div class="card">
                 <h2>✅ Completed Features</h2>
-                <ul class="feature-list">
-                    <li>
-                        <span class="status-icon done">✓</span>
-                        <strong>Feature 1:</strong> Serial Core Solver
-                    </li>
-                    <li>
-                        <span class="status-icon done">✓</span>
-                        <strong>Feature 2:</strong> Grid & Boundary Management
-                    </li>
+                <ul class="feature-list" id="completedFeatures">
+                    <li class="loading">Loading...</li>
                 </ul>
-                <p style="margin-top: 15px; font-size: 0.9em; color: #666;">
-                    Both modules fully tested and integrated. Ready for parallel implementations.
-                </p>
             </div>
 
             <div class="card">
                 <h2>📋 Next Steps</h2>
-                <ul class="feature-list">
-                    <li>
-                        <span class="status-icon pending">→</span>
-                        Feature 3: Convergence & Validation
-                    </li>
-                    <li>
-                        <span class="status-icon pending">→</span>
-                        Feature 4: OpenMP Parallel Version
-                    </li>
-                    <li>
-                        <span class="status-icon pending">→</span>
-                        Feature 5: POSIX Threads Version
-                    </li>
+                <ul class="feature-list" id="nextFeatures">
+                    <li class="loading">Loading...</li>
                 </ul>
             </div>
         </div>
@@ -380,32 +373,8 @@
         <!-- Implementation Timeline -->
         <div class="card">
             <h2>📅 Implementation Roadmap</h2>
-            <div class="timeline">
-                <div class="timeline-item active">
-                    <div class="timeline-marker"></div>
-                    <div class="timeline-title">Feature 1: Serial Core Solver</div>
-                    <div class="timeline-description">Baseline Jacobi solver with double buffering and convergence checking.</div>
-                </div>
-                <div class="timeline-item active">
-                    <div class="timeline-marker"></div>
-                    <div class="timeline-title">Feature 2: Grid & Boundary Management</div>
-                    <div class="timeline-description">Reusable grid module with allocation, initialization, and buffer utilities.</div>
-                </div>
-                <div class="timeline-item pending">
-                    <div class="timeline-marker"></div>
-                    <div class="timeline-title">Feature 3: Convergence & Validation</div>
-                    <div class="timeline-description">Independent validation layer for correctness verification.</div>
-                </div>
-                <div class="timeline-item pending">
-                    <div class="timeline-marker"></div>
-                    <div class="timeline-title">Feature 4: OpenMP Parallel</div>
-                    <div class="timeline-description">Shared-memory parallelization using OpenMP directives.</div>
-                </div>
-                <div class="timeline-item pending">
-                    <div class="timeline-marker"></div>
-                    <div class="timeline-title">Feature 5-11: Remaining Implementations</div>
-                    <div class="timeline-description">Pthreads, MPI, CUDA, Hybrid, Benchmarking, and Reporting.</div>
-                </div>
+            <div class="timeline" id="timeline">
+                <div class="loading">Loading timeline...</div>
             </div>
         </div>
 
@@ -415,26 +384,8 @@
             <!-- Test Results -->
             <div class="card">
                 <h2>🧪 Test Results</h2>
-                <div class="test-result">
-                    <strong>Grid Module Tests:</strong><br>
-                    <span class="test-count">36 / 36 passed</span>
-                    <ul class="feature-list" style="margin-top: 10px;">
-                        <li>✓ Allocation & deallocation</li>
-                        <li>✓ Boundary conditions</li>
-                        <li>✓ Buffer swapping</li>
-                        <li>✓ Grid copying</li>
-                        <li>✓ Large grid handling (N=512)</li>
-                    </ul>
-                </div>
-                <div class="test-result">
-                    <strong>Serial Jacobi Tests:</strong><br>
-                    <span class="test-count">18 / 18 passed</span>
-                    <ul class="feature-list" style="margin-top: 10px;">
-                        <li>✓ Convergence validation</li>
-                        <li>✓ Boundary preservation</li>
-                        <li>✓ Laplace residual checks</li>
-                        <li>✓ Solution range tests</li>
-                    </ul>
+                <div id="testResults">
+                    <div class="loading">Loading test results...</div>
                 </div>
             </div>
 
@@ -442,17 +393,11 @@
             <div class="card">
                 <h2>🔨 Build & Test</h2>
                 <p>Run all tests from the project root:</p>
-                <div class="code-block">
-$ make test
-                </div>
+                <div class="code-block">$ make test</div>
                 <p>Build only:</p>
-                <div class="code-block">
-$ make
-                </div>
+                <div class="code-block">$ make</div>
                 <p>Clean build artifacts:</p>
-                <div class="code-block">
-$ make clean
-                </div>
+                <div class="code-block">$ make clean</div>
                 <p><strong>Requirements:</strong> GCC, Make, POSIX C library (libm)</p>
             </div>
 
@@ -471,6 +416,7 @@ $ make clean
 │   └── test_jacobi_serial.c (18 tests)
 ├── Makefile            (Combined build rules)
 ├── features.md         (Project roadmap)
+├── project.json        (Project metadata)
 └── index.html          (This dashboard)</pre>
                 </div>
             </div>
@@ -485,27 +431,19 @@ $ make clean
             <div style="margin: 20px 0;">
                 <h3 style="color: #667eea; margin-bottom: 10px;">Grid Module (core/grid.h)</h3>
                 <div class="code-block">
-double **alloc_grid(int N)          // Allocate N×N grid
-void free_grid(double **grid, int N) // Free grid
-
-void init_grid(double **grid, int N) // Initialize with default BCs
-void init_grid_custom(...)           // Custom BCs & interior fill
-void fill_interior(...)              // Set interior without touching boundary
-
-void swap_buffers(double ***a, double ***b) // O(1) pointer swap
-void copy_grid(...)                  // Full N×N memcpy
+double **alloc_grid(int N)
+void free_grid(double **grid, int N)
+void init_grid(double **grid, int N)
+void init_grid_custom(...)
+void fill_interior(...)
+void swap_buffers(double ***a, double ***b)
+void copy_grid(...)
                 </div>
             </div>
 
             <div style="margin: 20px 0;">
                 <h3 style="color: #667eea; margin-bottom: 10px;">Jacobi Solver (core/jacobi_serial.h)</h3>
                 <div class="code-block">
-typedef struct {
-    int iterations;    // Iterations performed
-    double final_error; // Converged residual
-    int converged;     // 1 if tolerance met, 0 if max_iter hit
-} JacobiResult;
-
 JacobiResult jacobi_solve(
     double **grid, int N,
     int max_iter, double tol
@@ -520,9 +458,10 @@ JacobiResult jacobi_solve(
             <p>
                 <button class="button" onclick="navigateToFile('features.md')">📄 Project Features</button>
                 <button class="button secondary" onclick="downloadSource()">📥 Download Source</button>
+                <button class="button secondary" onclick="reloadDashboard()">🔄 Refresh Dashboard</button>
             </p>
             <p style="margin-top: 20px; color: #666; font-size: 0.9em;">
-                <strong>Git Repository:</strong> Fres02/HPC_Project_Group27 (branch: fres)<br>
+                <strong>Git Repository:</strong> <span id="repoInfo">Fres02/HPC_Project_Group27</span><br>
                 <strong>Implementation Language:</strong> C (C11 standard)<br>
                 <strong>Test Framework:</strong> Custom lightweight harness (no external dependencies)
             </p>
@@ -530,11 +469,125 @@ JacobiResult jacobi_solve(
 
         <footer>
             <p>HPC Jacobi Solver Project Dashboard</p>
-            <p style="font-size: 0.9em; margin-top: 10px;">Last updated: 2026-03-07 | Status: Active Development</p>
+            <p style="font-size: 0.9em; margin-top: 10px;">Status: <span id="footerStatus">Active Development</span></p>
         </footer>
     </div>
 
     <script>
+        let projectData = null;
+
+        async function loadProjectData() {
+            try {
+                const response = await fetch('project.json');
+                if (!response.ok) throw new Error(`HTTP error! status: ${response.status}`);
+                projectData = await response.json();
+                updateUI();
+            } catch (error) {
+                console.error('Failed to load project.json:', error);
+                showError('Could not load project data. Make sure project.json exists.');
+            }
+        }
+
+        function updateUI() {
+            if (!projectData) return;
+
+            document.getElementById('projectTitle').textContent = `🚀 ${projectData.projectName}`;
+            document.getElementById('projectDescription').textContent = projectData.description;
+            document.getElementById('statusBadge').textContent = `✓ ${projectData.status}`;
+            
+            const date = new Date(projectData.lastUpdated);
+            document.getElementById('lastUpdate').textContent = `Last Updated: ${date.toLocaleDateString()}`;
+
+            const pending = projectData.totalFeatures - projectData.completedFeatures;
+            document.getElementById('completedCount').textContent = projectData.completedFeatures;
+            document.getElementById('planningCount').textContent = pending;
+            document.getElementById('testCount').textContent = projectData.totalTestsPassed;
+
+            const progress = projectData.progressPercent;
+            document.getElementById('progressFill').style.width = progress + '%';
+            document.getElementById('progressText').textContent = progress;
+
+            updateCompletedFeatures();
+            updateNextFeatures();
+            updateTimeline();
+            updateTestResults();
+
+            document.getElementById('footerStatus').textContent = projectData.status;
+            document.getElementById('repoInfo').textContent = 
+                `${projectData.repository.owner}/${projectData.repository.name} (branch: ${projectData.repository.branch})`;
+        }
+
+        function updateCompletedFeatures() {
+            const list = document.getElementById('completedFeatures');
+            const completed = projectData.features.filter(f => f.status === 'completed');
+            
+            if (completed.length === 0) {
+                list.innerHTML = '<li style="color: #999;">No features completed yet</li>';
+                return;
+            }
+
+            list.innerHTML = completed.map(f => 
+                `<li>
+                    <span class="status-icon done">✓</span>
+                    <strong>Feature ${f.id}:</strong> ${f.name}
+                </li>`
+            ).join('');
+        }
+
+        function updateNextFeatures() {
+            const list = document.getElementById('nextFeatures');
+            const next = projectData.features.filter(f => f.status === 'pending').slice(0, 3);
+            
+            if (next.length === 0) {
+                list.innerHTML = '<li style="color: #999;">All features completed!</li>';
+                return;
+            }
+
+            list.innerHTML = next.map(f => 
+                `<li>
+                    <span class="status-icon pending">→</span>
+                    Feature ${f.id}: ${f.name}
+                </li>`
+            ).join('');
+        }
+
+        function updateTimeline() {
+            const timeline = document.getElementById('timeline');
+            
+            timeline.innerHTML = projectData.features.map(f => {
+                const statusClass = f.status === 'completed' ? 'active' : 'pending';
+                return `
+                    <div class="timeline-item ${statusClass}">
+                        <div class="timeline-marker"></div>
+                        <div class="timeline-title">Feature ${f.id}: ${f.name}</div>
+                        <div class="timeline-description">${f.description}</div>
+                    </div>
+                `;
+            }).join('');
+        }
+
+        function updateTestResults() {
+            const container = document.getElementById('testResults');
+            
+            container.innerHTML = projectData.testResults.map(result => `
+                <div class="test-result">
+                    <strong>${result.module}:</strong><br>
+                    <span class="test-count">${result.passed} / ${result.total} passed</span>
+                    <ul class="feature-list" style="margin-top: 10px;">
+                        ${result.tests.map(t => `<li>✓ ${t}</li>`).join('')}
+                    </ul>
+                </div>
+            `).join('');
+        }
+
+        function showError(message) {
+            const header = document.querySelector('header');
+            const alert = document.createElement('div');
+            alert.style.cssText = 'background: #fee; color: #c00; padding: 15px; border-radius: 4px; margin-top: 15px; border-left: 4px solid #c00;';
+            alert.textContent = '⚠️ ' + message;
+            header.appendChild(alert);
+        }
+
         function navigateToFile(filename) {
             alert(`View ${filename} for detailed project information.`);
         }
@@ -543,24 +596,18 @@ JacobiResult jacobi_solve(
             alert('Clone the repository: git clone https://github.com/Fres02/HPC_Project_Group27.git');
         }
 
-        // Add click feedback
+        function reloadDashboard() {
+            location.reload();
+        }
+
+        window.addEventListener('load', loadProjectData);
+
         document.querySelectorAll('.button').forEach(btn => {
             btn.addEventListener('click', function(e) {
                 this.style.transform = 'scale(0.95)';
                 setTimeout(() => {
                     this.style.transform = 'scale(1)';
                 }, 100);
-            });
-        });
-
-        // Smooth scroll for navigation
-        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
-            anchor.addEventListener('click', function (e) {
-                e.preventDefault();
-                const target = document.querySelector(this.getAttribute('href'));
-                if (target) {
-                    target.scrollIntoView({ behavior: 'smooth' });
-                }
             });
         });
     </script>
