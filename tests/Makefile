@@ -7,10 +7,10 @@ CUDA_LDFLAGS = -lcudart
 PTHREAD_LDFLAGS = -lpthread
 
 CORE_DIR = ../core
-CORE_SRCS = $(CORE_DIR)/grid.c $(CORE_DIR)/jacobi_serial.c $(CORE_DIR)/jacobi_pthreads.c
+CORE_SRCS = $(CORE_DIR)/grid.c $(CORE_DIR)/jacobi_serial.c $(CORE_DIR)/jacobi_pthreads.c $(CORE_DIR)/convergence.c
 CUDA_OBJ = $(CORE_DIR)/jacobi_cuda.o
 
-TEST_BINS = test_grid test_jacobi_serial test_jacobi_cuda test_jacobi_pthreads
+TEST_BINS = test_grid test_jacobi_serial test_jacobi_cuda test_jacobi_pthreads test_convergence
 
 .PHONY: all test clean
 
@@ -31,10 +31,14 @@ test_jacobi_pthreads: test_jacobi_pthreads.c $(CORE_SRCS)
 $(CUDA_OBJ):
 	$(MAKE) -C $(CORE_DIR) $(notdir $(CUDA_OBJ))
 
+test_convergence: test_convergence.c $(CORE_SRCS)
+	$(CC) $(CFLAGS) -I$(CORE_DIR) -o $@ $^ $(LDFLAGS)
+
 test: $(TEST_BINS)
 	./test_grid
 	./test_jacobi_serial
 	./test_jacobi_pthreads
+	./test_convergence
 
 clean:
 	rm -f $(TEST_BINS) *.o

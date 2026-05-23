@@ -5,7 +5,7 @@ NVCCFLAGS = -O2 -arch=sm_60
 LDFLAGS  = -lm
 PTHREAD_LDFLAGS = -lpthread
 
-SRCS = grid.c jacobi_serial.c jacobi_pthreads.c
+SRCS = grid.c jacobi_serial.c jacobi_pthreads.c convergence.c
 CUDA_SRCS = jacobi_cuda.cu
 OBJS = $(SRCS:.c=.o)
 CUDA_OBJS = $(CUDA_SRCS:.cu=.o)
