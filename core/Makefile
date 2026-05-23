@@ -3,8 +3,9 @@ NVCC     = nvcc
 CFLAGS   = -O2 -Wall -Wextra -std=c11
 NVCCFLAGS = -O2 -arch=sm_60
 LDFLAGS  = -lm
+PTHREAD_LDFLAGS = -lpthread
 
-SRCS = grid.c jacobi_serial.c
+SRCS = grid.c jacobi_serial.c jacobi_pthreads.c
 CUDA_SRCS = jacobi_cuda.cu
 OBJS = $(SRCS:.c=.o)
 CUDA_OBJS = $(CUDA_SRCS:.cu=.o)
@@ -24,7 +25,7 @@ demo: $(DEMO_BIN)
 	./$(DEMO_BIN)
 
 $(DEMO_BIN): demo_solver.c $(SRCS)
-	$(CC) $(CFLAGS) -o $@ $^ $(LDFLAGS)
+	$(CC) $(CFLAGS) -o $@ $^ $(LDFLAGS) $(PTHREAD_LDFLAGS)
 
 clean:
 	rm -f $(OBJS) $(CUDA_OBJS) $(DEMO_BIN)
