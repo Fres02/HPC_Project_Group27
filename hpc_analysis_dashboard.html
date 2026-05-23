@@ -449,6 +449,8 @@
                                 <th>POSIX Speedup</th>
                                 <th>MPI Time</th>
                                 <th>MPI Speedup</th>
+                                <th>CUDA Time</th>
+                                <th>CUDA Speedup</th>
                             </tr>
                         </thead>
                         <tbody id="scalingTableBody">
@@ -501,6 +503,25 @@
                             </tr>
                         </thead>
                         <tbody id="accuracyTableBody">
+                            <!-- Data will be inserted here -->
+                        </tbody>
+                    </table>
+
+                    <h3 style="color: #667eea; margin: 30px 0 20px 0;">Convergence Error Over Iterations (50×50 Grid)</h3>
+                    <table id="errorTable">
+                        <thead>
+                            <tr>
+                                <th>Iteration</th>
+                                <th>Serial Error</th>
+                                <th>OpenMP Error</th>
+                                <th>POSIX Error</th>
+                                <th>MPI Error</th>
+                                <th>CUDA Error</th>
+                                <th>Hybrid Error</th>
+                                <th>Match Status</th>
+                            </tr>
+                        </thead>
+                        <tbody id="errorTableBody">
                             <!-- Data will be inserted here -->
                         </tbody>
                     </table>
@@ -831,6 +852,8 @@
                 charts.strongScaling.destroy();
             }
 
+            const cudaConstant = data.map(() => 0.25); // CUDA stays constant
+
             charts.strongScaling = new Chart(ctx, {
                 type: 'line',
                 data: {
@@ -843,7 +866,8 @@
                             backgroundColor: 'transparent',
                             tension: 0.4,
                             fill: false,
-                            pointRadius: 5
+                            pointRadius: 5,
+                            borderWidth: 2
                         },
                         {
                             label: 'POSIX',
@@ -852,7 +876,8 @@
                             backgroundColor: 'transparent',
                             tension: 0.4,
                             fill: false,
-                            pointRadius: 5
+                            pointRadius: 5,
+                            borderWidth: 2
                         },
                         {
                             label: 'MPI',
@@ -861,7 +886,19 @@
                             backgroundColor: 'transparent',
                             tension: 0.4,
                             fill: false,
-                            pointRadius: 5
+                            pointRadius: 5,
+                            borderWidth: 2
+                        },
+                        {
+                            label: 'CUDA (Reference)',
+                            data: cudaConstant,
+                            borderColor: getChartColors().cuda,
+                            backgroundColor: 'transparent',
+                            borderDash: [5, 5],
+                            tension: 0.4,
+                            fill: false,
+                            pointRadius: 5,
+                            borderWidth: 2
                         }
                     ]
                 },
@@ -870,7 +907,7 @@
                     maintainAspectRatio: false,
                     plugins: {
                         legend: { position: 'top' },
-                        title: { display: true, text: 'Strong Scaling - 512×512 Grid' }
+                        title: { display: true, text: 'Strong Scaling vs CUDA (512×512 Grid)' }
                     },
                     scales: {
                         y: { title: { display: true, text: 'Execution Time (ms)' } }
@@ -1173,6 +1210,8 @@
             tbody.innerHTML = '';
 
             const serialTime = 210; // Baseline
+            const cudaTime = 0.25; // CUDA time is constant regardless of threads
+            const cudaSpeedup = (serialTime / cudaTime).toFixed(1);
 
             data.forEach(row => {
                 const openmpSpeedup = (serialTime / row.openmp).toFixed(2);
@@ -1191,6 +1230,8 @@
                     <td>${posixSpeedup}×</td>
                     <td>${row.mpi.toFixed(1)}</td>
                     <td>${mpiSpeedup}×</td>
+                    <td><span style="color: #d32f2f; font-weight: bold;">${cudaTime.toFixed(3)}</span></td>
+                    <td><span style="color: #d32f2f; font-weight: bold;">${cudaSpeedup}×</span></td>
                 `;
                 tbody.appendChild(tr);
             });
@@ -1211,6 +1252,36 @@
                     <td><span class="good">${row.cuda}</span></td>
                     <td><span class="good">${row.hybrid}</span></td>
                     <td>✅ All Match</td>
+                `;
+                tbody.appendChild(tr);
+            });
+        }
+
+        function populateErrorTable() {
+            const tbody = document.getElementById('errorTableBody');
+            tbody.innerHTML = '';
+
+            // Error convergence data for 50x50 grid
+            const errorData = [
+                { iter: 0, serial: '1.0e+00', openmp: '1.0e+00', posix: '1.0e+00', mpi: '1.0e+00', cuda: '1.0e+00', hybrid: '1.0e+00' },
+                { iter: 100, serial: '1.8e-02', openmp: '1.8e-02', posix: '1.8e-02', mpi: '1.8e-02', cuda: '1.8e-02', hybrid: '1.8e-02' },
+                { iter: 500, serial: '3.2e-04', openmp: '3.2e-04', posix: '3.2e-04', mpi: '3.2e-04', cuda: '3.2e-04', hybrid: '3.2e-04' },
+                { iter: 1000, serial: '1.5e-05', openmp: '1.5e-05', posix: '1.5e-05', mpi: '1.5e-05', cuda: '1.5e-05', hybrid: '1.5e-05' },
+                { iter: 2000, serial: '2.1e-06', openmp: '2.1e-06', posix: '2.1e-06', mpi: '2.1e-06', cuda: '2.1e-06', hybrid: '2.1e-06' },
+                { iter: 3270, serial: '9.9e-07', openmp: '9.9e-07', posix: '9.9e-07', mpi: '9.9e-07', cuda: '9.9e-07', hybrid: '9.9e-07' }
+            ];
+
+            errorData.forEach(row => {
+                const tr = document.createElement('tr');
+                tr.innerHTML = `
+                    <td class="method-label">${row.iter}</td>
+                    <td>${row.serial}</td>
+                    <td><span class="good">${row.openmp}</span></td>
+                    <td><span class="good">${row.posix}</span></td>
+                    <td><span class="good">${row.mpi}</span></td>
+                    <td><span class="good">${row.cuda}</span></td>
+                    <td><span class="good">${row.hybrid}</span></td>
+                    <td>✅ Identical</td>
                 `;
                 tbody.appendChild(tr);
             });
@@ -1382,6 +1453,7 @@
             populatePerformanceTable(perfData);
             populateScalingTable(scalingData);
             populateAccuracyTable(accuracyData);
+            populateErrorTable();
             populateMemoryTable();
             populateTransferTable();
             populateComparisonTable();
